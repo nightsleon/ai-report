@@ -1,0 +1,16 @@
+【用户问题】
+{question}
+
+【执行的 SQL】
+```sql
+{sql}
+```
+
+【查询结果】
+{queryResult}
+
+【图表 URL】
+{chartUrl}
+
+请基于以上信息，生成一份专业的数据分析报告。
+

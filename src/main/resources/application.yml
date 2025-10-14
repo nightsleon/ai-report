@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: ai-report
+  ai:
+    dashscope:
+      # 访问: https://dashscope.console.aliyun.com/
+      api-key: ${DASHSCOPE_API_KEY:your-api-key-here}
+      chat:
+        options:
+          # 模型名称，可选: qwen-turbo, qwen-plus, qwen-max, qwen-max-longcontext 等
+          model: qwen3-max
+          # 温度参数，控制输出的随机性，范围 0-2
+          temperature: 0.7
+      embedding:
+        options:
+          # 向量模型名称: text-embedding-v1, text-embedding-v2, text-embedding-v3
+          model: text-embedding-v3
+    mcp:
+      client:
+        toolcallback:
+          enabled: true
+        sse:
+          connections:
+            mysqlDataQuery:
+              url: http://10.133.0.21:18088/
+            antvChart:
+              url: http://10.133.0.21:18089/
+        # 设置MCP客户端超时时间（毫秒）
+        request-timeout: 60000
+
+server:
+  port: 8080
+
+# 调试日志
+logging:
+  level:
+    io.modelcontextprotocol.client: DEBUG
+    io.modelcontextprotocol.spec: DEBUG
+    org.springframework.ai: INFO
+    org.springframework.ai.chat.client.advisor: DEBUG
+    com.alibaba.cloud.ai: DEBUG
+

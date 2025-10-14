@@ -1,0 +1,120 @@
+### AI Report HTTP 测试用例
+### 作者: liangjun
+### 日期: 2025-10-14
+
+
+### 1. 聊天测试 - 自我介绍
+GET http://localhost:8080/ai/chat?message=请介绍一下你自己
+Accept: text/plain
+
+###
+
+### 2. 知识库查询 - 查询销售额相关问题
+GET http://localhost:8080/knowledge/search?question=如何计算销售额&topK=3
+Accept: application/json
+
+###
+
+### 3. RAG 问答 - 查询销售额计算方法
+GET http://localhost:8080/rag/chat?question=如何计算各部门的销售额？&topK=3
+Accept: text/plain
+###
+
+### 4. NL2SQL - 查询各部门销售额
+GET http://localhost:8080/rag/nl2sql?question=查询各部门的销售额&topK=3
+Accept: text/plain
+
+###
+
+### 5. NL2SQL - 查询环比数据
+GET http://localhost:8080/rag/nl2sql?question=查询各部门的月度环比销售额&topK=3
+Accept: text/plain
+
+###
+
+### 6. 数据查询 - 各部门销售额
+GET http://localhost:8080/report/query?question=查询各部门的销售额&topK=3
+Accept: application/json
+
+###
+
+### 7. 数据查询 - 每月销售趋势
+GET http://localhost:8080/report/query?question=查询每月的销售趋势&topK=3
+Accept: application/json
+
+###
+
+### 8. 完整报告生成 - 部门销售分析（含 Word）
+POST http://localhost:8080/report/generate
+Content-Type: application/json
+Accept: application/json
+
+{
+  "question": "查询各部门的销售额",
+  "topK": 3,
+  "generateChart": true,
+  "chartType": "bar",
+  "generateWord": true
+}
+
+###
+
+### 9. 完整报告生成 - 月度趋势分析（含 Word）
+POST http://localhost:8080/report/generate
+Content-Type: application/json
+Accept: application/json
+
+{
+  "question": "查询每月的销售趋势",
+  "topK": 3,
+  "generateChart": true,
+  "chartType": "line",
+  "generateWord": true
+}
+
+###
+
+### 10. 完整报告生成 - 产品类别占比（自动推荐图表 + Word）
+POST http://localhost:8080/report/generate
+Content-Type: application/json
+Accept: application/json
+
+{
+  "question": "查询各产品类别的销售额占比",
+  "topK": 3,
+  "generateChart": true,
+  "generateWord": true
+}
+
+###
+
+### 11. 完整报告生成 - 部门同比增长（含 Word）
+POST http://localhost:8080/report/generate
+Content-Type: application/json
+Accept: application/json
+
+{
+  "question": "查询各部门2024年相比2023年的同比增长情况",
+  "topK": 3,
+  "generateChart": true,
+  "chartType": "bar",
+  "generateWord": true
+}
+
+###
+
+### 12. 完整报告生成 - 仅 Markdown（不生成 Word）
+POST http://localhost:8080/report/generate
+Content-Type: application/json
+Accept: application/json
+
+{
+  "question": "查询各部门的销售额",
+  "topK": 3,
+  "generateChart": true,
+  "chartType": "bar",
+  "generateWord": false
+}
+
+###
+

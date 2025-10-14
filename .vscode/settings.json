@@ -1,0 +1,14 @@
+{
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-17",
+      "path": "/Users/pidan-l/soft/jdk-17.0.12.jdk/Contents/Home",
+      "default": true
+    }
+  ],
+  "java.jdt.ls.java.home": "/Users/pidan-l/soft/jdk-17.0.12.jdk/Contents/Home",
+  "maven.executable.path": "mvn",
+  "maven.terminal.useJavaHome": true,
+  "java.home": "/Users/pidan-l/soft/jdk-17.0.12.jdk/Contents/Home"
+}
+

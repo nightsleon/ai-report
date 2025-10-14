@@ -1,0 +1,52 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea/*
+!.idea/misc.xml
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/*
+!.vscode/settings.json
+
+### Maven ###
+.mvn/
+mvnw
+mvnw.cmd
+
+### Flatten Maven Plugin ###
+.flattened-pom.xml
+
+### Environment ###
+.env
+
+### Generated Reports ###
+report-result/*.md
+report-result/*.docx
+!report-result/.gitkeep
+
