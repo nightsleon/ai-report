@@ -25,7 +25,7 @@ public class PandocUtils {
      * @param markdownFilePath Markdown 文件路径
      * @return Word 文件路径，转换失败返回 null
      */
-    public String convertMarkdownToWord(String markdownFilePath) {
+    public static String convertMarkdownToWord(String markdownFilePath) {
         try {
             // 生成 Word 文件路径（替换 .md 为 .docx）
             String wordFilePath = markdownFilePath.replaceAll("\\.md$", ".docx");

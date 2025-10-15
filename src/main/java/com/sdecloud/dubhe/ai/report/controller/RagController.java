@@ -1,7 +1,8 @@
 package com.sdecloud.dubhe.ai.report.controller;
 
+import com.alibaba.cloud.ai.graph.OverAllState;
+import com.sdecloud.dubhe.ai.report.graph.Nl2SqlNode;
 import com.sdecloud.dubhe.ai.report.service.KnowledgeBaseService;
-import com.sdecloud.dubhe.ai.report.service.Nl2SqlService;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.document.Document;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -26,14 +29,14 @@ public class RagController {
 
 	private final ChatClient chatClient;
 	private final KnowledgeBaseService knowledgeBaseService;
-	private final Nl2SqlService nl2SqlService;
+	private final Nl2SqlNode nl2SqlNode;
 
 	public RagController(ChatModel chatModel, 
 	                     KnowledgeBaseService knowledgeBaseService,
-	                     Nl2SqlService nl2SqlService) {
+	                     Nl2SqlNode nl2SqlNode) {
 		this.chatClient = ChatClient.builder(chatModel).build();
 		this.knowledgeBaseService = knowledgeBaseService;
-		this.nl2SqlService = nl2SqlService;
+		this.nl2SqlNode = nl2SqlNode;
 	}
 
 	/**
@@ -89,7 +92,19 @@ public class RagController {
 	public String nl2sql(
 			@RequestParam("question") String question,
 			@RequestParam(value = "topK", defaultValue = "3") int topK) {
-		return nl2SqlService.convertToSql(question, topK);
+		
+		// 创建状态并调用Nl2SqlNode
+		OverAllState state = new OverAllState();
+		Map<String, Object> input = new HashMap<>(4);
+		input.put("question", question);
+		input.put("topK", topK);
+		state.input(input);
+
+		// 调用节点
+		Map<String, Object> result = nl2SqlNode.apply(state);
+		
+		// 返回SQL
+		return (String) result.get("sql");
 	}
 
 }

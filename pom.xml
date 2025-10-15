@@ -107,6 +107,12 @@
 			<artifactId>spring-ai-starter-mcp-client-webflux</artifactId>
 		</dependency>
 
+		<!-- Spring AI Alibaba Graph 支持 -->
+		<dependency>
+			<groupId>com.alibaba.cloud.ai</groupId>
+			<artifactId>spring-ai-alibaba-graph-core</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
