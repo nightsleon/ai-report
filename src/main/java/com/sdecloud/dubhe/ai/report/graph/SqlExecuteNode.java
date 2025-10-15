@@ -2,6 +2,7 @@ package com.sdecloud.dubhe.ai.report.graph;
 
 import com.alibaba.cloud.ai.graph.OverAllState;
 import com.alibaba.cloud.ai.graph.action.NodeAction;
+import com.sdecloud.dubhe.ai.report.constant.GraphStateKeys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
@@ -33,8 +34,8 @@ public class SqlExecuteNode implements NodeAction {
     public Map<String, Object> apply(OverAllState state) {
         log.info("执行SQL查询节点");
 
-        String sql = state.value("sql", "");
-        Boolean nl2sqlSuccess = state.value("nl2sql_success", false);
+        String sql = state.value(GraphStateKeys.SQL, "");
+        Boolean nl2sqlSuccess = state.value(GraphStateKeys.NL2SQL_SUCCESS, false);
 
         if (sql == null || sql.trim().isEmpty()) {
             throw new IllegalArgumentException("SQL语句不能为空");
@@ -70,15 +71,15 @@ public class SqlExecuteNode implements NodeAction {
             log.debug("查询结果: {}", queryResult);
 
             return Map.of(
-                "queryResult", queryResult,
-                "sql_execute_success", true
+                GraphStateKeys.QUERY_RESULT, queryResult,
+                GraphStateKeys.SQL_EXECUTE_SUCCESS, true
             );
 
         } catch (Exception e) {
             log.error("SQL执行失败", e);
             return Map.of(
-                "sql_execute_success", false,
-                "sql_execute_error", e.getMessage()
+                GraphStateKeys.SQL_EXECUTE_SUCCESS, false,
+                GraphStateKeys.SQL_EXECUTE_ERROR, e.getMessage()
             );
         }
     }

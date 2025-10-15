@@ -2,6 +2,7 @@ package com.sdecloud.dubhe.ai.report.graph;
 
 import com.alibaba.cloud.ai.graph.OverAllState;
 import com.alibaba.cloud.ai.graph.action.NodeAction;
+import com.sdecloud.dubhe.ai.report.constant.GraphStateKeys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
@@ -33,10 +34,10 @@ public class ChartGenerateNode implements NodeAction {
     public Map<String, Object> apply(OverAllState state) {
         log.info("执行图表生成节点");
 
-        String sql = state.value("sql", "");
-        String queryResult = state.value("queryResult", "");
-        Boolean sqlExecuteSuccess = state.value("sql_execute_success", false);
-        Boolean generateChart = state.value("generateChart", true);
+        String sql = state.value(GraphStateKeys.SQL, "");
+        String queryResult = state.value(GraphStateKeys.QUERY_RESULT, "");
+        Boolean sqlExecuteSuccess = state.value(GraphStateKeys.SQL_EXECUTE_SUCCESS, false);
+        Boolean generateChart = state.value(GraphStateKeys.GENERATE_CHART, true);
 
         if (!sqlExecuteSuccess) {
             throw new IllegalStateException("SQL执行失败，无法生成图表");
@@ -50,8 +51,8 @@ public class ChartGenerateNode implements NodeAction {
         if (!generateChart) {
             log.info("跳过图表生成");
             return Map.of(
-                    "chart_generate_success", true,
-                    "chartUrl", null
+                    GraphStateKeys.CHART_GENERATE_SUCCESS, true,
+                    GraphStateKeys.CHART_URL, null
             );
         }
 
@@ -82,9 +83,9 @@ public class ChartGenerateNode implements NodeAction {
             log.info("图表生成成功: {}", chartUrl);
 
             return Map.of(
-                    "chartUrl", chartUrl,
-                    "chartType", chartType,
-                    "chart_generate_success", true
+                    GraphStateKeys.CHART_URL, chartUrl,
+                    GraphStateKeys.CHART_TYPE, chartType,
+                    GraphStateKeys.CHART_GENERATE_SUCCESS, true
             );
 
         } catch (Exception e) {
@@ -92,8 +93,8 @@ public class ChartGenerateNode implements NodeAction {
             // 图表生成失败不应该中断整个流程，只记录错误
             log.warn("图表生成失败，继续执行后续步骤: {}", e.getMessage());
             return Map.of(
-                    "chart_generate_success", false,
-                    "chart_generate_error", e.getMessage()
+                    GraphStateKeys.CHART_GENERATE_SUCCESS, false,
+                    GraphStateKeys.CHART_GENERATE_ERROR, e.getMessage()
             );
         }
     }

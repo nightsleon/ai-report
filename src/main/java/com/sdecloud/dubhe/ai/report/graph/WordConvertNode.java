@@ -2,6 +2,7 @@ package com.sdecloud.dubhe.ai.report.graph;
 
 import com.alibaba.cloud.ai.graph.OverAllState;
 import com.alibaba.cloud.ai.graph.action.NodeAction;
+import com.sdecloud.dubhe.ai.report.constant.GraphStateKeys;
 import com.sdecloud.dubhe.ai.report.util.PandocUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,9 +24,9 @@ public class WordConvertNode implements NodeAction {
     public Map<String, Object> apply(OverAllState state) {
         log.info("执行Word转换节点");
 
-        String reportFilePath = state.value("reportFilePath", "");
-        Boolean reportGenerateSuccess = state.value("report_generate_success", false);
-        Boolean generateWord = state.value("generateWord", false);
+        String reportFilePath = state.value(GraphStateKeys.REPORT_FILE_PATH, "");
+        Boolean reportGenerateSuccess = state.value(GraphStateKeys.REPORT_GENERATE_SUCCESS, false);
+        Boolean generateWord = state.value(GraphStateKeys.GENERATE_WORD, false);
 
         if (reportFilePath == null || reportFilePath.trim().isEmpty()) {
             throw new IllegalArgumentException("报告文件路径不能为空");
@@ -39,8 +40,8 @@ public class WordConvertNode implements NodeAction {
         if (!generateWord) {
             log.info("跳过Word转换");
             return Map.of(
-                "word_convert_success", true,
-                "wordFilePath", null
+                GraphStateKeys.WORD_CONVERT_SUCCESS, true,
+                GraphStateKeys.WORD_FILE_PATH, null
             );
         }
 
@@ -51,15 +52,15 @@ public class WordConvertNode implements NodeAction {
             if (wordFilePath != null) {
                 log.info("Word文档生成成功: {}", wordFilePath);
                 return Map.of(
-                    "wordFilePath", wordFilePath,
-                    "word_convert_success", true
+                    GraphStateKeys.WORD_FILE_PATH, wordFilePath,
+                    GraphStateKeys.WORD_CONVERT_SUCCESS, true
                 );
             } else {
                 // 转换失败，但不中断流程
                 log.warn("Word转换失败，但继续执行");
                 return Map.of(
-                    "word_convert_success", false,
-                    "word_convert_error", "Pandoc转换失败"
+                    GraphStateKeys.WORD_CONVERT_SUCCESS, false,
+                    GraphStateKeys.WORD_CONVERT_ERROR, "Pandoc转换失败"
                 );
             }
 
@@ -68,8 +69,8 @@ public class WordConvertNode implements NodeAction {
             // Word转换失败不应该中断整个流程，只记录错误
             log.warn("Word转换失败，继续执行: {}", e.getMessage());
             return Map.of(
-                "word_convert_success", false,
-                "word_convert_error", e.getMessage()
+                GraphStateKeys.WORD_CONVERT_SUCCESS, false,
+                GraphStateKeys.WORD_CONVERT_ERROR, e.getMessage()
             );
         }
     }

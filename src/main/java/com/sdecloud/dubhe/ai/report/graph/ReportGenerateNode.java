@@ -2,6 +2,7 @@ package com.sdecloud.dubhe.ai.report.graph;
 
 import com.alibaba.cloud.ai.graph.OverAllState;
 import com.alibaba.cloud.ai.graph.action.NodeAction;
+import com.sdecloud.dubhe.ai.report.constant.GraphStateKeys;
 import com.sdecloud.dubhe.ai.report.util.FileUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,11 +51,11 @@ public class ReportGenerateNode implements NodeAction {
     public Map<String, Object> apply(OverAllState state) {
         log.info("执行报告生成节点");
 
-        String question = state.value("question", "");
-        String sql = state.value("sql", "");
-        String queryResult = state.value("queryResult", "");
-        String chartUrl = state.value("chartUrl", "");
-        Boolean sqlExecuteSuccess = state.value("sql_execute_success", false);
+        String question = state.value(GraphStateKeys.QUESTION, "");
+        String sql = state.value(GraphStateKeys.SQL, "");
+        String queryResult = state.value(GraphStateKeys.QUERY_RESULT, "");
+        String chartUrl = state.value(GraphStateKeys.CHART_URL, "");
+        Boolean sqlExecuteSuccess = state.value(GraphStateKeys.SQL_EXECUTE_SUCCESS, false);
 
         if (question == null || question.trim().isEmpty()) {
             throw new IllegalArgumentException("问题不能为空");
@@ -110,16 +111,16 @@ public class ReportGenerateNode implements NodeAction {
             log.info("报告已保存至: {}", reportFilePath);
 
             return Map.of(
-                "report", report,
-                "reportFilePath", reportFilePath,
-                "report_generate_success", true
+                GraphStateKeys.REPORT, report,
+                GraphStateKeys.REPORT_FILE_PATH, reportFilePath,
+                GraphStateKeys.REPORT_GENERATE_SUCCESS, true
             );
 
         } catch (Exception e) {
             log.error("报告生成失败", e);
             return Map.of(
-                "report_generate_success", false,
-                "report_generate_error", e.getMessage()
+                GraphStateKeys.REPORT_GENERATE_SUCCESS, false,
+                GraphStateKeys.REPORT_GENERATE_ERROR, e.getMessage()
             );
         }
     }

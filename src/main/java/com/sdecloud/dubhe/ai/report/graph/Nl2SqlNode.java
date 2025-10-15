@@ -2,6 +2,7 @@ package com.sdecloud.dubhe.ai.report.graph;
 
 import com.alibaba.cloud.ai.graph.OverAllState;
 import com.alibaba.cloud.ai.graph.action.NodeAction;
+import com.sdecloud.dubhe.ai.report.constant.GraphStateKeys;
 import com.sdecloud.dubhe.ai.report.service.KnowledgeBaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -49,8 +50,8 @@ public class Nl2SqlNode implements NodeAction {
     public Map<String, Object> apply(OverAllState state) {
         log.info("执行自然语言转换SQL节点");
 
-        String question = state.value("question", "");
-        Integer topK = state.value("topK", 5);
+        String question = state.value(GraphStateKeys.QUESTION, "");
+        Integer topK = state.value(GraphStateKeys.TOP_K, 5);
 
         if (question == null || question.trim().isEmpty()) {
             throw new IllegalArgumentException("问题不能为空");
@@ -87,15 +88,15 @@ public class Nl2SqlNode implements NodeAction {
             log.debug("生成的SQL: {}", sql);
 
             return Map.of(
-                    "sql", sql,
-                    "nl2sql_success", true
+                    GraphStateKeys.SQL, sql,
+                    GraphStateKeys.NL2SQL_SUCCESS, true
             );
 
         } catch (Exception e) {
             log.error("SQL转换失败", e);
             return Map.of(
-                    "nl2sql_success", false,
-                    "nl2sql_error", e.getMessage()
+                    GraphStateKeys.NL2SQL_SUCCESS, false,
+                    GraphStateKeys.NL2SQL_ERROR, e.getMessage()
             );
         }
     }
