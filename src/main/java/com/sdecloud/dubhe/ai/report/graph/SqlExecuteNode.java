@@ -5,6 +5,7 @@ import com.alibaba.cloud.ai.graph.action.NodeAction;
 import com.sdecloud.dubhe.ai.report.constant.GraphStateKeys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,7 @@ public class SqlExecuteNode implements NodeAction {
 
     public SqlExecuteNode(ChatModel chatModel, ToolCallbackProvider tools) {
         this.chatClient = ChatClient.builder(chatModel)
+                .defaultAdvisors(new SimpleLoggerAdvisor())
                 .defaultToolCallbacks(tools)
                 .build();
     }

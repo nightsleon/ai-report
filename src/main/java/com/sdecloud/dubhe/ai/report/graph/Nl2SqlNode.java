@@ -6,6 +6,7 @@ import com.sdecloud.dubhe.ai.report.constant.GraphStateKeys;
 import com.sdecloud.dubhe.ai.report.service.KnowledgeBaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.prompt.PromptTemplate;
@@ -38,7 +39,7 @@ public class Nl2SqlNode implements NodeAction {
     public Nl2SqlNode(ChatModel chatModel, KnowledgeBaseService knowledgeBaseService,
                       @Value("classpath:prompts/nl2sql-system-prompt.txt") Resource systemPromptResource,
                       @Value("classpath:prompts/nl2sql-user-prompt.txt") Resource userPromptResource) {
-        this.chatClient = ChatClient.builder(chatModel).build();
+        this.chatClient = ChatClient.builder(chatModel).defaultAdvisors(new SimpleLoggerAdvisor()).build();
         this.knowledgeBaseService = knowledgeBaseService;
         
         // 初始化 Prompt 模板（只创建一次）

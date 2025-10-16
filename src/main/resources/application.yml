@@ -34,9 +34,10 @@ server:
 # 调试日志
 logging:
   level:
+    com.sdecloud.dubhe.ai.report: DEBUG
     io.modelcontextprotocol.client: DEBUG
     io.modelcontextprotocol.spec: DEBUG
-    org.springframework.ai: INFO
+    org.springframework.ai: DEBUG
     org.springframework.ai.chat.client.advisor: DEBUG
     com.alibaba.cloud.ai: DEBUG
 

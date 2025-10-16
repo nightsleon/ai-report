@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.prompt.PromptTemplate;
@@ -38,7 +39,7 @@ public class ReportGenerateNode implements NodeAction {
     public ReportGenerateNode(ChatModel chatModel, FileUtils fileUtils,
                               @Value("classpath:prompts/report-analyst-system-prompt.txt") Resource reportSystemPromptResource,
                               @Value("classpath:prompts/report-analyst-user-prompt.txt") Resource reportUserPromptResource) {
-        this.chatClient = ChatClient.builder(chatModel).build();
+        this.chatClient = ChatClient.builder(chatModel).defaultAdvisors(new SimpleLoggerAdvisor()).build();
         this.fileUtils = fileUtils;
         this.objectMapper = new ObjectMapper();
         
